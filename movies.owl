@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns="http://example.org/netflix#"
+    xml:base="http://example.org/netflix">
+
+  <owl:Ontology rdf:about="http://example.org/netflix">
+    <rdfs:comment>Ontology for Netflix content with a clean class hierarchy under owl:Thing.</rdfs:comment>
+  </owl:Ontology>
+
+  <!-- Classes under owl:Thing -->
+  <owl:Class rdf:about="#Person"/>
+  <owl:Class rdf:about="#Content"/>
+  <owl:Class rdf:about="#Country"/>
+  <owl:Class rdf:about="#Genre"/>
+
+  <!-- Subclasses -->
+  <owl:Class rdf:about="#Actor">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Director">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Movie">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+  </owl:Class>
+  <owl:Class rdf:about="#TVShow">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Episode">
+    <rdfs:subClassOf rdf:resource="#TVShow"/>
+  </owl:Class>
+
+  <!-- Object Properties -->
+  <owl:ObjectProperty rdf:about="#hasDirector">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Director"/>
+    <rdfs:label>has director</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasActor">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Actor"/>
+    <rdfs:label>has actor</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasGenre">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Genre"/>
+    <rdfs:label>has genre</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasCountry">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Country"/>
+    <rdfs:label>has country</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasEpisode">
+    <rdfs:domain rdf:resource="#TVShow"/>
+    <rdfs:range rdf:resource="#Episode"/>
+    <rdfs:label>has episode</rdfs:label>
+  </owl:ObjectProperty>
+
+</rdf:RDF>
