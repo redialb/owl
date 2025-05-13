@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns="http://example.org/netflix#"
+    xml:base="http://example.org/netflix">
+
+  <owl:Ontology rdf:about="http://example.org/netflix">
+    <rdfs:comment>Ontology for Netflix content with a clean class hierarchy under owl:Thing.</rdfs:comment>
+  </owl:Ontology>
+
+  <!-- Classes under owl:Thing -->
+  <owl:Class rdf:about="#Person"/>
+  <owl:Class rdf:about="#Content"/>
+  <owl:Class rdf:about="#Country"/>
+  <owl:Class rdf:about="#Genre"/>
+
+  <!-- Subclasses -->
+  <owl:Class rdf:about="#Actor">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Director">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Movie">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+  </owl:Class>
+  <owl:Class rdf:about="#TVShow">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Episode">
+    <rdfs:subClassOf rdf:resource="#TVShow"/>
+  </owl:Class>
+
+  <!-- Object Properties -->
+  <owl:ObjectProperty rdf:about="#hasDirector">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Director"/>
+    <rdfs:label>has director</rdfs:label>
+    <!-- Reflexivity: Every Director directs at least one Content -->
+    <owl:equivalentProperty rdf:resource="#hasDirector"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasActor">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Actor"/>
+    <rdfs:label>has actor</rdfs:label>
+    <!-- Symmetry: If Movie A has Actor X, then Actor X has Movie A -->
+    <owl:inverseOf rdf:resource="#hasActor"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasGenre">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Genre"/>
+    <rdfs:label>has genre</rdfs:label>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasCountry">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Country"/>
+    <rdfs:label>has country</rdfs:label>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasEpisode">
+    <rdfs:domain rdf:resource="#TVShow"/>
+    <rdfs:range rdf:resource="#Episode"/>
+    <rdfs:label>has episode</rdfs:label>
+    <!-- Transitivity: If TV Show A has Episode B, and B has Episode C, then A has Episode C -->
+    <owl:transitiveProperty rdf:resource="#hasEpisode"/>
+  </owl:ObjectProperty>
+
+  <!-- Quantification (someValuesFrom) -->
+  <rdf:Description rdf:about="#Movie">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf>
+      <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Thing"/>
+      <rdf:Description rdf:about="#hasGenre">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <owl:someValuesFrom rdf:resource="#Genre"/>
+      </rdf:Description>
+    </rdfs:subClassOf>
+  </rdf:Description>
+
+  <!-- Quantification (allValuesFrom) -->
+  <rdf:Description rdf:about="#Content">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf>
+      <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Thing"/>
+      <rdf:Description rdf:about="#hasCountry">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <owl:allValuesFrom rdf:resource="#Country"/>
+      </rdf:Description>
+    </rdfs:subClassOf>
+  </rdf:Description>
+
+</rdf:RDF>
