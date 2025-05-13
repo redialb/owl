@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns="http://example.org/netflix#"
+    xml:base="http://example.org/netflix">
+
+  <!-- Ontology Header -->
+  <owl:Ontology rdf:about="http://example.org/netflix">
+    <rdfs:comment>Ontology for Netflix content, representing movies, shows, people, and genres.</rdfs:comment>
+  </owl:Ontology>
+
+  <!-- Classes -->
+  <owl:Class rdf:about="#Person">
+    <rdfs:label>Person</rdfs:label>
+    <rdfs:comment>A human individual, such as an actor or director.</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#Content">
+    <rdfs:label>Content</rdfs:label>
+    <rdfs:comment>Abstract class for movies and TV shows.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasCountry"/>
+        <owl:allValuesFrom rdf:resource="#Country"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:about="#Country">
+    <rdfs:label>Country</rdfs:label>
+    <rdfs:comment>Country associated with the content's origin.</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#Genre">
+    <rdfs:label>Genre</rdfs:label>
+    <rdfs:comment>Category such as Drama, Sci-Fi, or Action.</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#Actor">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+    <rdfs:label>Actor</rdfs:label>
+    <rdfs:comment>An individual performing in content.</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#Director">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+    <rdfs:label>Director</rdfs:label>
+    <rdfs:comment>Person who directed the content.</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#Movie">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+    <rdfs:label>Movie</rdfs:label>
+    <rdfs:comment>Standalone film released as content.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasGenre"/>
+        <owl:someValuesFrom rdf:resource="#Genre"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:about="#TVShow">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+    <rdfs:label>TV Show</rdfs:label>
+    <rdfs:comment>Serialized content composed of episodes.</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#Episode">
+    <rdfs:subClassOf rdf:resource="#TVShow"/>
+    <rdfs:label>Episode</rdfs:label>
+    <rdfs:comment>Individual segment of a TV show.</rdfs:comment>
+  </owl:Class>
+
+  <!-- Object Properties -->
+  <owl:ObjectProperty rdf:about="#hasDirector">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Director"/>
+    <rdfs:label>has director</rdfs:label>
+    <rdfs:comment>Links content to its director.</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasActor">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Actor"/>
+    <rdfs:label>has actor</rdfs:label>
+    <rdfs:comment>Links content to an actor who appears in it.</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasGenre">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Genre"/>
+    <rdfs:label>has genre</rdfs:label>
+    <rdfs:comment>Specifies the genre of the content.</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasCountry">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Country"/>
+    <rdfs:label>has country</rdfs:label>
+    <rdfs:comment>Specifies the country associated with the content.</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasEpisode">
+    <rdfs:domain rdf:resource="#TVShow"/>
+    <rdfs:range rdf:resource="#Episode"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:label>has episode</rdfs:label>
+    <rdfs:comment>Links a TV show to its episodes. Transitive to allow nested structures (e.g., seasons).</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#sharesGenreWith">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Content"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    <rdfs:label>shares genre with</rdfs:label>
+    <rdfs:comment>If two content items share a genre, the relation is symmetric.</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Individuals -->
+
+  <!-- Movies -->
+  <rdf:Description rdf:about="#Inception">
+    <rdf:type rdf:resource="#Movie"/>
+    <rdfs:label>Inception</rdfs:label>
+    <hasDirector rdf:resource="#ChristopherNolan"/>
+    <hasActor rdf:resource="#LeonardoDiCaprio"/>
+    <hasGenre rdf:resource="#SciFi"/>
+    <hasCountry rdf:resource="#USA"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#TheDarkKnight">
+    <rdf:type rdf:resource="#Movie"/>
+    <rdfs:label>The Dark Knight</rdfs:label>
+    <hasDirector rdf:resource="#ChristopherNolan"/>
+    <hasActor rdf:resource="#ChristianBale"/>
+    <hasGenre rdf:resource="#Action"/>
+    <hasCountry rdf:resource="#USA"/>
+  </rdf:Description>
+
+  <!-- TV Show -->
+  <rdf:Description rdf:about="#BreakingBad">
+    <rdf:type rdf:resource="#TVShow"/>
+    <rdfs:label>Breaking Bad</rdfs:label>
+    <hasDirector rdf:resource="#VinceGilligan"/>
+    <hasActor rdf:resource="#BryanCranston"/>
+    <hasGenre rdf:resource="#Drama"/>
+    <hasCountry rdf:resource="#USA"/>
+  </rdf:Description>
+
+  <!-- People -->
+  <rdf:Description rdf:about="#LeonardoDiCaprio">
+    <rdf:type rdf:resource="#Actor"/>
+    <rdfs:label>Leonardo DiCaprio</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#ChristianBale">
+    <rdf:type rdf:resource="#Actor"/>
+    <rdfs:label>Christian Bale</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#BryanCranston">
+    <rdf:type rdf:resource="#Actor"/>
+    <rdfs:label>Bryan Cranston</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#ChristopherNolan">
+    <rdf:type rdf:resource="#Director"/>
+    <rdfs:label>Christopher Nolan</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#VinceGilligan">
+    <rdf:type rdf:resource="#Director"/>
+    <rdfs:label>Vince Gilligan</rdfs:label>
+  </rdf:Description>
+
+  <!-- Genres -->
+  <rdf:Description rdf:about="#SciFi">
+    <rdf:type rdf:resource="#Genre"/>
+    <rdfs:label>Sci-Fi</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Action">
+    <rdf:type rdf:resource="#Genre"/>
+    <rdfs:label>Action</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Drama">
+    <rdf:type rdf:resource="#Genre"/>
+    <rdfs:label>Drama</rdfs:label>
+  </rdf:Description>
+
+  <!-- Countries -->
+  <rdf:Description rdf:about="#USA">
+    <rdf:type rdf:resource="#Country"/>
+    <rdfs:label>USA</rdfs:label>
+  </rdf:Description>
+
+</rdf:RDF>
