@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns="http://example.org/netflix#"
+         xml:base="http://example.org/netflix">
+
+  <!-- Ontology Header -->
+  <owl:Ontology rdf:about="http://example.org/netflix">
+    <rdfs:comment>Ontology for movies, TV shows, actors, directors, and genres</rdfs:comment>
+  </owl:Ontology>
+
+  <!-- Classes under owl:Thing -->
+  <owl:Class rdf:about="#Person"/>
+  <owl:Class rdf:about="#Content"/>
+  <owl:Class rdf:about="#Country"/>
+  <owl:Class rdf:about="#Genre"/>
+
+  <!-- Subclasses -->
+  <owl:Class rdf:about="#Actor">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Director">
+    <rdfs:subClassOf rdf:resource="#Person"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Movie">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+  </owl:Class>
+  <owl:Class rdf:about="#TVShow">
+    <rdfs:subClassOf rdf:resource="#Content"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Episode">
+    <rdfs:subClassOf rdf:resource="#TVShow"/>
+  </owl:Class>
+
+  <!-- Object Properties -->
+  <owl:ObjectProperty rdf:about="#hasDirector">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Director"/>
+    <rdfs:label>has director</rdfs:label>
+    <owl:equivalentProperty rdf:resource="#hasDirector"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasActor">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Actor"/>
+    <rdfs:label>has actor</rdfs:label>
+    <owl:inverseOf rdf:resource="#hasActor"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasGenre">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Genre"/>
+    <rdfs:label>has genre</rdfs:label>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasCountry">
+    <rdfs:domain rdf:resource="#Content"/>
+    <rdfs:range rdf:resource="#Country"/>
+    <rdfs:label>has country</rdfs:label>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasEpisode">
+    <rdfs:domain rdf:resource="#TVShow"/>
+    <rdfs:range rdf:resource="#Episode"/>
+    <rdfs:label>has episode</rdfs:label>
+    <owl:transitiveProperty rdf:resource="#hasEpisode"/>
+  </owl:ObjectProperty>
+
+  <!-- Quantification (someValuesFrom) -->
+  <rdf:Description rdf:about="#Movie">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf>
+      <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Thing"/>
+      <rdf:Description rdf:about="#hasGenre">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <owl:someValuesFrom rdf:resource="#Genre"/>
+      </rdf:Description>
+    </rdfs:subClassOf>
+  </rdf:Description>
+
+  <!-- Quantification (allValuesFrom) -->
+  <rdf:Description rdf:about="#Content">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf>
+      <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Thing"/>
+      <rdf:Description rdf:about="#hasCountry">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <owl:allValuesFrom rdf:resource="#Country"/>
+      </rdf:Description>
+    </rdfs:subClassOf>
+  </rdf:Description>
+
+  <!-- Instances (Individuals) -->
+  <!-- Movies -->
+  <rdf:Description rdf:about="#TheShawshankRedemption">
+    <rdf:type rdf:resource="#Movie"/>
+    <rdfs:label>The Shawshank Redemption</rdfs:label>
+    <hasDirector rdf:resource="#FrankDarabont"/>
+    <hasActor rdf:resource="#TimRobbins"/>
+    <hasActor rdf:resource="#MorganFreeman"/>
+    <hasActor rdf:resource="#BobGunton"/>
+    <hasActor rdf:resource="#WilliamSadler"/>
+    <hasGenre rdf:resource="#Drama"/>
+    <hasCountry rdf:resource="#USA"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Inception">
+    <rdf:type rdf:resource="#Movie"/>
+    <rdfs:label>Inception</rdfs:label>
+    <hasDirector rdf:resource="#ChristopherNolan"/>
+    <hasActor rdf:resource="#LeonardoDiCaprio"/>
+    <hasGenre rdf:resource="#SciFi"/>
+    <hasCountry rdf:resource="#USA"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#TheDarkKnight">
+    <rdf:type rdf:resource="#Movie"/>
+    <rdfs:label>The Dark Knight</rdfs:label>
+    <hasDirector rdf:resource="#ChristopherNolan"/>
+    <hasActor rdf:resource="#ChristianBale"/>
+    <hasGenre rdf:resource="#Action"/>
+    <hasCountry rdf:resource="#USA"/>
+  </rdf:Description>
+
+  <!-- TV Shows -->
+  <rdf:Description rdf:about="#BreakingBad">
+    <rdf:type rdf:resource="#TVShow"/>
+    <rdfs:label>Breaking Bad</rdfs:label>
+    <hasDirector rdf:resource="#VinceGilligan"/>
+    <hasActor rdf:resource="#BryanCranston"/>
+    <hasGenre rdf:resource="#Drama"/>
+    <hasCountry rdf:resource="#USA"/>
+  </rdf:Description>
+
+  <!-- Actors -->
+  <rdf:Description rdf:about="#LeonardoDiCaprio">
+    <rdf:type rdf:resource="#Actor"/>
+    <rdfs:label>Leonardo DiCaprio</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#ChristianBale">
+    <rdf:type rdf:resource="#Actor"/>
+    <rdfs:label>Christian Bale</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#BryanCranston">
+    <rdf:type rdf:resource="#Actor"/>
+    <rdfs:label>Bryan Cranston</rdfs:label>
+  </rdf:Description>
+
+  <!-- Directors -->
+  <rdf:Description rdf:about="#FrankDarabont">
+    <rdf:type rdf:resource="#Director"/>
+    <rdfs:label>Frank Darabont</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#ChristopherNolan">
+    <rdf:type rdf:resource="#Director"/>
+    <rdfs:label>Christopher Nolan</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#VinceGilligan">
+    <rdf:type rdf:resource="#Director"/>
+    <rdfs:label>Vince Gilligan</rdfs:label>
+  </rdf:Description>
+
+  <!-- Genres -->
+  <rdf:Description rdf:about="#SciFi">
+    <rdf:type rdf:resource="#Genre"/>
+    <rdfs:label>Sci-Fi</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Action">
+    <rdf:type rdf:resource="#Genre"/>
+    <rdfs:label>Action</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Drama">
+    <rdf:type rdf:resource="#Genre"/>
+    <rdfs:label>Drama</rdfs:label>
+  </rdf:Description>
+
+  <!-- Countries -->
+  <rdf:Description rdf:about="#USA">
+    <rdf:type rdf:resource="#Country"/>
+    <rdfs:label>USA</rdfs:label>
+  </rdf:Description>
+
+</rdf:RDF>
